@@ -65,18 +65,15 @@ class DmsfFile < ActiveRecord::Base
                 :datetime => Proc.new {|o| o.updated_at },
                 :author => Proc.new {|o| o.last_revision.user }
   
-
-  @@storage_path = Setting.plugin_redmine_dmsf["dmsf_storage_directory"].strip
+  @@storage_path = nil
 
   def self.storage_path
-    if !File.exists?(@@storage_path)
-      Dir.mkdir(@@storage_path)
-    end
-    @@storage_path
+    # fixed storage dir for plan.io
+    storage_path = @@storage_path || Rails.root.join('files', (Thread.current[:planio_account] || 'test'), 'dmsf').to_s
+    FileUtils.mkdir_p(storage_path) unless File.exists?(storage_path)
+    storage_path
   end
 
-  # Lets introduce a write for storage path, that way we can also 
-  # better interact from test-cases etc
   def self.storage_path=(obj)
     @@storage_path = obj
   end
@@ -324,7 +321,11 @@ class DmsfFile < ActiveRecord::Base
     if !options[:titles_only] && $xapian_bindings_available
       database = nil
       begin
-        database = Xapian::Database.new(Setting.plugin_redmine_dmsf["dmsf_index_database"].strip)
+        # jk: fixed index path for plan.io
+        # database = Xapian::Database.new(Setting.plugin_redmine_dmsf["dmsf_index_database"].strip)
+        xapian_dir = Rails.root.join('files', (Thread.current[:planio_account] || 'test'), 'dmsf_index').to_s
+        FileUtils.mkdir_p(xapian_dir) unless File.exists?(xapian_dir)
+        database = Xapian::Database.new(xapian_dir)
       rescue
         Rails.logger.warn "REDMAIN_XAPIAN ERROR: Xapian database is not properly set or initiated or is corrupted."
       end
