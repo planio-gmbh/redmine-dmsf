@@ -44,7 +44,8 @@ Redmine::Plugin.register :redmine_dmsf do
               "dmsf_zip_encoding" => "utf-8",
               # "dmsf_index_database" => "#{RAILS_ROOT}/files/dmsf_index",
               "dmsf_stemming_lang" => "english",
-              "dmsf_stemming_strategy" => "STEM_NONE"
+              "dmsf_stemming_strategy" => "STEM_NONE",
+              "dmsf_really_delete_files" => "1"
             }
   
   menu :project_menu, :dmsf, { :controller => "dmsf", :action => "show" }, :caption => :menu_dmsf, :before => :documents, :param => :id
