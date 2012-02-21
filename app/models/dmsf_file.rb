@@ -53,15 +53,12 @@ class DmsfFile < ActiveRecord::Base
                 :datetime => Proc.new {|o| o.updated_at },
                 :author => Proc.new {|o| o.last_revision.user }
   
-  #TODO: place into better place
   def self.storage_path
     # jk: fixed storage dir for plan.io
-    return "#{RAILS_ROOT}/dmsf"
+    storage_dir = Rails.root.join('files', Thread.current[:planio_account], 'dmsf').to_s
     # storage_dir = Setting.plugin_redmine_dmsf["dmsf_storage_directory"].strip
-    # if !File.exists?(storage_dir)
-    #   Dir.mkdir(storage_dir)
-    # end
-    # storage_dir
+    FileUtils.mkdir_p(storage_dir) unless File.exists?(storage_dir)
+    storage_dir
   end
   
   def self.project_root_files(project)
@@ -267,7 +264,9 @@ class DmsfFile < ActiveRecord::Base
       begin
         # jk: fixed index path for plan.io
         # database = Xapian::Database.new(Setting.plugin_redmine_dmsf["dmsf_index_database"].strip)
-        database = Xapian::Database.new("#{RAILS_ROOT}/dmsf_index")
+        xapian_dir = Rails.root.join('files', Thread.current[:planio_account], 'dmsf_index').to_s
+        FileUtils.mkdir_p(xapian_dir) unless File.exists?(xapian_dir)
+        database = Xapian::Database.new(xapian_dir)
       rescue
         Rails.logger.warn "REDMAIN_XAPIAN ERROR: Xapian database is not properly set or initiated or is corrupted."
       end
