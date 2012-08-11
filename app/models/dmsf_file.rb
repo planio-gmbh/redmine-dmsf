@@ -55,7 +55,7 @@ class DmsfFile < ActiveRecord::Base
   
   def self.storage_path
     # jk: fixed storage dir for plan.io
-    storage_dir = Rails.root.join('files', Thread.current[:planio_account], 'dmsf').to_s
+    storage_dir = Rails.root.join('files', (Thread.current[:planio_account] || 'test'), 'dmsf').to_s
     # storage_dir = Setting.plugin_redmine_dmsf["dmsf_storage_directory"].strip
     FileUtils.mkdir_p(storage_dir) unless File.exists?(storage_dir)
     storage_dir

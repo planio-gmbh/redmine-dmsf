@@ -17,6 +17,26 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 ActionController::Routing::Routes.draw do |map|
-  map.resources :dmsf
-  map.resources :dmsf_files
+  map.resources :dmsf, :collection => {
+                         :edit_root => :get,
+                         :entries_operation => :get,
+                         :delete_entries => :post,
+                         :delete => :post,
+                         :save_root => :post,
+                         :notify_activate => :post,
+                         :notify_deactivate => :post
+                       }
+  map.resources :dmsf_files, :member => {
+                               :create_revision => :post,
+                               :delete_revision => :post,
+                               :lock => :post,
+                               :unlock => :post,
+                               :notify_activate => :post,
+                               :notify_deactivate => :post,
+                               :delete => :post
+                             }
+  map.connect 'dmsf_upload/:action/:id', :controller => 'dmsf_upload'
+  map.connect 'dmsf_state/:action/:id', :controller => 'dmsf_state'
+  map.connect 'dmsf_files_copy/:action/:id', :controller => 'dmsf_files_copy'
+  map.connect 'dmsf_folders_copy/:action/:id', :controller => 'dmsf_folders_copy'
 end

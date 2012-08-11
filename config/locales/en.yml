@@ -1,4 +1,10 @@
 en:
+  time:
+    formats:
+      db: "%Y-%m-%d %H:%M:%S"
+  date:
+    formats:
+      db: "%Y-%m-%d"
   :dmsf: "DMSF"
   :label_dmsf_file_plural: "Dmsf files"
   :warning_no_entries_selected: "No entries selected"
