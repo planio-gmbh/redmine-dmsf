@@ -19,7 +19,8 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :dmsf, :collection => {
                          :edit_root => :get,
-                         :entries_operation => :get,
+                         :entries_operation => :post,
+                         :entries_email => :post,
                          :delete_entries => :post,
                          :delete => :post,
                          :save_root => :post,
