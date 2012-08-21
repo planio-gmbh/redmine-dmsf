@@ -24,6 +24,7 @@ ActionController::Routing::Routes.draw do |map|
                          :delete_entries => :post,
                          :delete => :post,
                          :save_root => :post,
+                         :save => :post,
                          :notify_activate => :post,
                          :notify_deactivate => :post
                        }
