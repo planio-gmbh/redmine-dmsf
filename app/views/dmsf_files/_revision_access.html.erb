@@ -13,8 +13,8 @@
 			<tr>
 				<td><%=h(User.find(access["user_id"]))%></td>
 				<td><%=access["count"]%></td>
-        <td><%= I18n.l access["min"], :format => :db %></td>
-        <td><%= I18n.l access["max"], :format => :db %></td>
+        <td><%= I18n.l((String === access["min"] ? Time.parse(access['min']) : access['min']), :format => :db) %></td>
+        <td><%= I18n.l((String === access["max"] ? Time.parse(access['max']) : access['max']), :format => :db) %></td>
 			</tr>
 <% end %>
 		</tbody>
