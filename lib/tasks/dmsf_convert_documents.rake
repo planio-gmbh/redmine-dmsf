@@ -29,7 +29,6 @@ Available options:
 Example:
   rake redmine:dmsf_convert_documents project=test RAILS_ENV="production"
 END_DESC
-require File.expand_path(File.dirname(__FILE__) + "/../../../../../config/environment")
 
 class DmsfConvertDocuments
   
@@ -189,6 +188,11 @@ end
 
 namespace :redmine do
   task :dmsf_convert_documents => :environment do
+    # running basic rake tasks like rake db:create does also scan plugin tasks.
+    # we need to require the environment in here so that it does not 
+    # cause an 'Unknown database' Exception in case of e.g. rake db:create
+    require File.expand_path(File.dirname(__FILE__) + "/../../../../../config/environment")
+
     options = {}
     options[:project] = ENV['project'] if ENV['project']
     options[:dry] = ENV['dry'] if ENV['dry']
