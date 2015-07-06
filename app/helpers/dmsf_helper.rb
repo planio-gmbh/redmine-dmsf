@@ -22,7 +22,10 @@ require 'digest/md5'
 module DmsfHelper
 
   def self.temp_dir
-    Dir.tmpdir
+    # fixed temp dir for plan.io
+    temp_dir = Rails.root.join('files', (Thread.current[:planio_account] || 'test'), 'dmsf_temp').to_s
+    FileUtils.mkdir_p(temp_dir) unless File.exists?(temp_dir)
+    temp_dir
   end
 
   def self.temp_filename(filename)
