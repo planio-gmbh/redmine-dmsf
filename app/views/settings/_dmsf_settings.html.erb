@@ -51,34 +51,6 @@
 </p>
 
 <p>
-  <%=  content_tag(:label, "#{l(:label_file_storage_directory)}:") %>
-  <% 
-    storage_dir = @settings['dmsf_storage_directory'].strip
-    storage_dir = "#{Rails.root}/files/dmsf" if storage_dir.blank?
-  %>
-  <%= text_field_tag 'settings[dmsf_storage_directory]', storage_dir, :size => 50 %><br/>
-  (<%= l(:label_default) %>: <%= "#{Rails.root}/files/dmsf" %>)
-</p>
-<% unless File.exists?(storage_dir) %>
-  <% begin %>
-     <% Dir.mkdir(storage_dir) %>
-  <% rescue %>
-    <p class="warning"><%= l(:error_file_storage_directory_does_not_exist) %></p> 
-  <% end %>
-<% end %>
-<% testfilename = "#{storage_dir}/test.test" %>
-<% if File.exists?(storage_dir) %>
-  <%	begin %>
-    <% File.open(testfilename, 'wb') do |file| %>
-    <% end %>
-  <% rescue %>
-    <p class="warning"><%= l(:error_file_can_not_be_created) %></p>
-  <%	ensure %>
-    <% File.delete(testfilename) if File.exists?(testfilename) %>
-  <% end %>
-<% end %>
-
-<p>
   <%= content_tag(:label, "#{l(:label_physical_file_delete)}:") %>
   <%= check_box_tag('settings[dmsf_really_delete_files]', true, @settings['dmsf_really_delete_files']) %><br/>
   (<%=l(:label_default)%>: <%=l(:general_text_No)%>)
