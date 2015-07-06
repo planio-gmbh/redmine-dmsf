@@ -28,6 +28,3 @@ gem 'simple_enum'
 gem 'uuidtools', '~> 2.1.1'
 gem 'dav4rack',  '~> 0.3.0'
 
-group :xapian do  
-  gem 'xapian-full-alaveteli', :require => false
-end
