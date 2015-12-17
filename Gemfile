@@ -7,5 +7,5 @@ gem 'uuidtools', '~> 2.1.1'
 gem 'dav4rack',  '~> 0.3.0'
 
 group :production do
-  gem 'nokogiri'
+  gem 'nokogiri', '>= 1.6.7.1'
 end
