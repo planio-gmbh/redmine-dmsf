@@ -101,12 +101,10 @@ class DmsfFile < ActiveRecord::Base
   @@storage_path = nil
 
   def self.storage_path
-    return @@storage_path if @@storage_path.present?
-    path = Setting.plugin_redmine_dmsf['dmsf_storage_directory']
-    path = Pathname(Redmine::Configuration['attachments_storage_path']).join('dmsf') if path.blank? && Redmine::Configuration['attachments_storage_path'].present?
-    path = Rails.root.join('files/dmsf').to_s if path.blank?
-    path.strip if path
-    path
+    # fixed storage dir for plan.io
+    storage_path = @@storage_path || Rails.root.join('files', (Thread.current[:planio_account] || 'test'), 'dmsf').to_s
+    FileUtils.mkdir_p(storage_path) unless File.exists?(storage_path)
+    storage_path
   end
 
   # Lets introduce a write for storage path, that way we can also
@@ -348,8 +346,9 @@ class DmsfFile < ActiveRecord::Base
       database = nil
       begin
         lang = Setting.plugin_redmine_dmsf['dmsf_stemming_lang'].strip
-        databasepath = File.join(
-          Setting.plugin_redmine_dmsf['dmsf_index_database'].strip, lang)
+        # jk: fixed index path for plan.io
+        databasepath = Rails.root.join('files', (Thread.current[:planio_account] || 'test'), 'dmsf_index', lang).to_s
+        FileUtils.mkdir_p(databasepath) unless File.exists?(databasepath)
         database = Xapian::Database.new(databasepath)
       rescue Exception => e
         Rails.logger.warn "REDMAIN_XAPIAN ERROR: Xapian database is not properly set, initiated or it's corrupted."
