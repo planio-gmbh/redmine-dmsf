@@ -44,6 +44,7 @@ Redmine::Plugin.register :redmine_dmsf do
       #'dmsf_index_database' => Rails.root.join('files/dmsf_index').to_s,
       'dmsf_stemming_lang' => 'english',
       'dmsf_stemming_strategy' => 'STEM_NONE',
+      'dmsf_really_delete_files' => '1',
       'dmsf_webdav' => '1',
       'dmsf_display_notified_recipients' => 0
     }
