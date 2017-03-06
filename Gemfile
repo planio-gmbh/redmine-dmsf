@@ -22,7 +22,7 @@
 
 source 'https://rubygems.org'
 
-gem 'rubyzip', '>= 1.0.0'
+gem 'rubyzip'
 gem 'zip-zip'
 gem 'simple_enum'
 gem 'uuidtools'
